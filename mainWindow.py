@@ -4,8 +4,20 @@ from distutils import command
 
 
 master = Tk()
-master.geometry("600x400+300+100")#窗口大小，位置
+master.geometry("600x450+300+100")#窗口大小，位置
 var = IntVar()
+
+
+text=Text(master,width=60,height=28)  
+#text.pack(side=TOP,expand=YES)  
+text.place(relx=0.6, rely=0.5, anchor=CENTER)
+text.insert(INSERT,'I Love FishC.com!')
+
+w2 = Label(master,
+           justify=LEFT,
+           padx = 10, 
+           text="标签")
+w2.place(relx=0.1, rely=0.5, anchor=CENTER)
 
 def newfile_callback():
     print "new file"
