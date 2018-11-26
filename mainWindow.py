@@ -18,18 +18,34 @@ import fileProcess as fP
 
 master = Tk()
 master.geometry("580x400+300+100")#窗口大小，位置
-
+#master.resizable(width=False, height=False) #设置窗口是否可变长宽
 
 
 def print_button(master):
     btnSelect = Button(master, text="Select", width=7, height=1, command=file_callback)
     btnSelect.place(x=500, y=10, anchor = 'nw')
 
-    btnSelect = Button(master, text="Find", width=7, height=1, command=file_callback)
+    btnSelect = Button(master, text="Find", width=7, height=1, command=find_callback)
     btnSelect.place(x=500, y=50, anchor = 'nw')
 
     btnSelect = Button(master, text="Update", width=7, height=1, command=file_callback)
     btnSelect.place(x=500, y=90, anchor = 'nw')
+
+
+def file_callback():
+    print "file callback"
+    Node.textFile.delete(0.0, END)
+    Node.textFile.insert(INSERT,fP.selectPath())
+   
+    str_size =Node.textFile.get("0.0", "end").strip('\n')
+    fP.findFile(str_size, Node)
+    #messagebox.showinfo('复制', '编辑-复制！')  # 消息提示框
+
+def find_callback():
+    path=Node.textFile.get("0.0", "end")
+    fP.getItemInfo(path, Node)
+
+
 
 
 class textNode:
@@ -81,24 +97,20 @@ def print_text(master, Node):
     Node.textProject.place(x=280, y=240, anchor='nw')
 
 
-    #Node.textMessage = Text(master, width=58, height=6, font=testFont)
-    #Node.textMessage.place(x=80, y=280, anchor='nw')
+    """
+    Message frame
+    """
+    fmMessage = Frame(master)
+    Node.textMessage = Text(fmMessage, width=58, height=6, font=testFont)
+    Node.textMessage.pack(side=LEFT)
+    scrl = Scrollbar(fmMessage)
+    scrl.pack(side=RIGHT, fill=Y)
+    Node.textMessage.configure(yscrollcommand = scrl.set)
+    Node.textMessage.pack(side=LEFT, fill=BOTH)
+    scrl['command'] = Node.textMessage.yview
 
- 
-    Node.textMessage = Text(master, width=58, height=6, font=testFont)
-    # 创建滚动条
-    scroll = Scrollbar(master,borderwidth=3)
-    # 将滚动条与文本框关联
-    Node.textMessage.config(yscrollcommand=scroll.set) # 将滚动条关联到文本框
-    scroll['command']=Node.textMessage.yview
-    scroll.place(x=550, y=280, anchor='nw')
-    #scroll.grid(row=5,column=6) # side是滚动条放置的位置，上下左右。fill是将滚动条沿着y轴填充
-    Node.textMessage.place(x=80, y=280, anchor='nw')
-    
-    
+    fmMessage.place(x=80, y=280, anchor='nw')
 
-    Node.textMessage.insert(INSERT, 'hello world\n')
-    Node.textMessage.insert(INSERT, '1234567')
 
 
 def print_label(master):
@@ -168,17 +180,6 @@ menubar.add_cascade(label='操作', menu=vmenu)
 menubar.add_cascade(label='设置', menu=smenu)
 menubar.add_cascade(label='帮助', menu=hmenu)
 
-
-def file_callback():
-    print "file callback"
-    Node.textFile.delete(0.0, END)
-    Node.textFile.insert(INSERT,fP.selectPath())
-   
-    str_size =Node.textFile.get("0.0", "end").strip('\n')
-    fP.findFile(str_size, Node)
-
-
-    #messagebox.showinfo('复制', '编辑-复制！')  # 消息提示框
 
 def oper_callback():
     print "oper callback"
